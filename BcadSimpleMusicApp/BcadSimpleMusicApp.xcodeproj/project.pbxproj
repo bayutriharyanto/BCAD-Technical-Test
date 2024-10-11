@@ -24,6 +24,8 @@
 		7535299F2CB8D11B007FDE26 /* SongModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535299E2CB8D11B007FDE26 /* SongModel.swift */; };
 		753529A12CB8FF5A007FDE26 /* MusicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753529A02CB8FF5A007FDE26 /* MusicViewModel.swift */; };
 		758ABC352CB95C7300930E8A /* MockAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758ABC342CB95C7300930E8A /* MockAPIService.swift */; };
+		758ABC372CB95D8D00930E8A /* MockDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758ABC362CB95D8D00930E8A /* MockDelegate.swift */; };
+		758ABC392CB95E2A00930E8A /* MusicViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758ABC382CB95E2A00930E8A /* MusicViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		7535299E2CB8D11B007FDE26 /* SongModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongModel.swift; sourceTree = "<group>"; };
 		753529A02CB8FF5A007FDE26 /* MusicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicViewModel.swift; sourceTree = "<group>"; };
 		758ABC342CB95C7300930E8A /* MockAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIService.swift; sourceTree = "<group>"; };
+		758ABC362CB95D8D00930E8A /* MockDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDelegate.swift; sourceTree = "<group>"; };
+		758ABC382CB95E2A00930E8A /* MusicViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +138,8 @@
 			children = (
 				753529722CB8BA3F007FDE26 /* BcadSimpleMusicAppTests.swift */,
 				758ABC342CB95C7300930E8A /* MockAPIService.swift */,
+				758ABC362CB95D8D00930E8A /* MockDelegate.swift */,
+				758ABC382CB95E2A00930E8A /* MusicViewModelTests.swift */,
 			);
 			path = BcadSimpleMusicAppTests;
 			sourceTree = "<group>";
@@ -342,7 +348,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				758ABC392CB95E2A00930E8A /* MusicViewModelTests.swift in Sources */,
 				758ABC352CB95C7300930E8A /* MockAPIService.swift in Sources */,
+				758ABC372CB95D8D00930E8A /* MockDelegate.swift in Sources */,
 				753529732CB8BA3F007FDE26 /* BcadSimpleMusicAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
