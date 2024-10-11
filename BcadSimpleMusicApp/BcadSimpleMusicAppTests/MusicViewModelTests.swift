@@ -109,5 +109,19 @@ final class MusicViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isPlaying)
         XCTAssertTrue(mockDelegate.updatePlayingStateCalled)
     }
+    
+    func testViewModelDidUpdatePlayerProgress() {
+        let testSong = Song(id: 1, title: "Test Song", artist: "Test Artist", previewUrl: "https://example.com/1", artworkUrl: "https://example.com/art1", collectionName: "Test Collection")
+        viewModel.setSongs([testSong])
+        viewModel.selectSong(at: 0)
+
+        let currentTime: Double = 30.0
+        let duration: Double = 120.0
+        viewModel.delegate?.viewModelDidUpdatePlayerProgress(viewModel, currentTime: currentTime, duration: duration)
+        
+        XCTAssertTrue(mockDelegate.sliderControllerCalled)
+        XCTAssertEqual(mockDelegate.currentTime, currentTime)
+        XCTAssertEqual(mockDelegate.duration, duration)
+    }
 
 }
