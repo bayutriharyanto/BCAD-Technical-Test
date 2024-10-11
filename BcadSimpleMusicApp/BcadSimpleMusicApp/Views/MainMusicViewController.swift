@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 import LBTATools
-
+import AVFAudio
 
 class MainMusicViewController: UIViewController, UISearchBarDelegate
 {
@@ -87,6 +87,14 @@ class MainMusicViewController: UIViewController, UISearchBarDelegate
         return view
     }()
     
+    private let viewModel: MusicViewModel
+    
+    init(viewModel: MusicViewModel = MusicViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.delegate = self
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -94,6 +102,12 @@ class MainMusicViewController: UIViewController, UISearchBarDelegate
         super.viewDidLoad()
         setupView()
         setupTapGesture()
+        setupAudioSession()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.songListTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: viewModel.isPlaying ? 150 : 0, right: 0)
     }
     
     private func setupView() {
@@ -136,16 +150,39 @@ class MainMusicViewController: UIViewController, UISearchBarDelegate
         }
         mainControlStackView.fillSuperview(padding:
                                             UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+        previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+        playButton.addTarget(self, action: #selector(playPauseButtonTapped), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        progressSlider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
     }
     
-        
+    private func updateNoResultsLabelVisibility() {
+        if viewModel.songs.isEmpty && !viewModel.isLoading {
+            emptyStateLabel.isHidden = false
+            if searchBar.text?.isEmpty ?? true {
+                emptyStateLabel.text = "Find your favorite music and enjoy"
+            } else {
+                emptyStateLabel.text = "No music found"
+            }
+        } else {
+            emptyStateLabel.isHidden = true
+        }
+    }
+    
     private func setupTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
     
-   
+    private func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("Failed to set up audio session: \(error)")
+        }
+    }
     
     private func showPlayerControls() {
         guard musicControllerView.isHidden else { return }
@@ -165,11 +202,32 @@ class MainMusicViewController: UIViewController, UISearchBarDelegate
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    @objc private func previousButtonTapped() {
+        viewModel.previousSong()
+    }
+    
+    @objc private func playPauseButtonTapped() {
+        viewModel.togglePlayPause()
+    }
+    
+    @objc private func nextButtonTapped() {
+        viewModel.nextSong()
+    }
+    
+    @objc private func sliderValueChanged(_ sender: UISlider) {
+        guard let duration = viewModel.player?.currentItem?.duration else { return }
+        let totalSeconds = CMTimeGetSeconds(duration)
+        let value = Float64(sender.value) * totalSeconds
+        let seekTime = CMTime(value: CMTimeValue(value), timescale: 1)
+        viewModel.player?.seek(to: seekTime)
+    }
+
 }
-extension MainMusicViewController: UITableViewDelegate, UITableViewDataSource {
+extension MainMusicViewController: UITableViewDelegate, UITableViewDataSource, MusicViewModelDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
+        viewModel.searchSongs(query: searchText)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -177,14 +235,30 @@ extension MainMusicViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return viewModel.songs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as? MusicItemTableViewCell else {
             fatalError("Unable to dequeue CustomSongCell")
         }
+        let song = viewModel.songs[indexPath.row]
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.selectSong(at: indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: true)
+        view.endEditing(true)
+    }
+    
+    func viewModelDidUpdateSongs(_ viewModel: MusicViewModel) {
+        DispatchQueue.main.async {
+            self.songListTableView.reloadData()
+            self.updateNoResultsLabelVisibility()
+        }
+    }
+    
+    
 }
