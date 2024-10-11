@@ -26,6 +26,7 @@
 		758ABC372CB95D8D00930E8A /* MockDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758ABC362CB95D8D00930E8A /* MockDelegate.swift */; };
 		758ABC392CB95E2A00930E8A /* MusicViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758ABC382CB95E2A00930E8A /* MusicViewModelTests.swift */; };
 		758ABC3B2CB964E800930E8A /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758ABC3A2CB964E800930E8A /* NetworkServiceTests.swift */; };
+		758ABC3D2CB9671C00930E8A /* SongModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758ABC3C2CB9671C00930E8A /* SongModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		758ABC362CB95D8D00930E8A /* MockDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDelegate.swift; sourceTree = "<group>"; };
 		758ABC382CB95E2A00930E8A /* MusicViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicViewModelTests.swift; sourceTree = "<group>"; };
 		758ABC3A2CB964E800930E8A /* NetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
+		758ABC3C2CB9671C00930E8A /* SongModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 				758ABC362CB95D8D00930E8A /* MockDelegate.swift */,
 				758ABC382CB95E2A00930E8A /* MusicViewModelTests.swift */,
 				758ABC3A2CB964E800930E8A /* NetworkServiceTests.swift */,
+				758ABC3C2CB9671C00930E8A /* SongModelTests.swift */,
 			);
 			path = BcadSimpleMusicAppTests;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				758ABC3B2CB964E800930E8A /* NetworkServiceTests.swift in Sources */,
+				758ABC3D2CB9671C00930E8A /* SongModelTests.swift in Sources */,
 				758ABC392CB95E2A00930E8A /* MusicViewModelTests.swift in Sources */,
 				758ABC352CB95C7300930E8A /* MockAPIService.swift in Sources */,
 				758ABC372CB95D8D00930E8A /* MockDelegate.swift in Sources */,
