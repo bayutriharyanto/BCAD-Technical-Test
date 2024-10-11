@@ -68,5 +68,23 @@ class MusicItemTableViewCell: UITableViewCell {
         mainStackView.fillSuperview(padding:
                                         UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
+    
+    func configure(with song: Song, isPlaying: Bool) {
+        titleLabel.text = song.title
+        artistLabel.text = song.artist
+        playingIcon.image = isPlaying ? UIImage(systemName: "waveform.path") : nil
+        albumLabel.text = song.collectionName
+        
+        if let url = URL(string: song.artworkUrl) {
+            DispatchQueue.global().async {
+                if let data = try? Data(contentsOf: url) {
+                    let image = UIImage(data: data)
+                    DispatchQueue.main.async {
+                        self.albumImageView.image = image
+                    }
+                }
+            }
+        }
+    }
 
 }
