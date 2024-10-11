@@ -99,5 +99,15 @@ final class MusicViewModelTests: XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
     }
+    
+    func testTogglePlayPause() {
+        viewModel.togglePlayPause()
+        XCTAssertTrue(viewModel.isPlaying)
+        XCTAssertTrue(mockDelegate.updatePlayingStateCalled)
+        
+        viewModel.togglePlayPause()
+        XCTAssertFalse(viewModel.isPlaying)
+        XCTAssertTrue(mockDelegate.updatePlayingStateCalled)
+    }
 
 }
