@@ -29,21 +29,26 @@ enum APIError: Error {
 class NetworkService {
     static let shared = NetworkService()
     var session: URLSession
+    var urlComponents: URLComponents?
     
     init(session: URLSession = .shared) {
         self.session = session
+        self.urlComponents = URLComponents(string: "https://itunes.apple.com/search")
     }
     
     func request(term: String, completion: @escaping (Result<[Song], APIError>) -> Void) {
-        var urlComponents = URLComponents(string: "https://itunes.apple.com/search")
+        guard var urlComponents = self.urlComponents else {
+            completion(.failure(.invalidURL))
+            return
+        }
         
-        urlComponents?.queryItems = [
+        urlComponents.queryItems = [
             URLQueryItem(name: "term", value: term),
             URLQueryItem(name: "country", value: "ID"),
             URLQueryItem(name: "media", value: "music")
         ]
         
-        guard let url = urlComponents?.url else {
+        guard let url = urlComponents.url else {
             completion(.failure(.invalidURL))
             return
         }
