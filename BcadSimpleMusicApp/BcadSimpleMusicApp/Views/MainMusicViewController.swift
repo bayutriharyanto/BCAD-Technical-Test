@@ -243,6 +243,7 @@ extension MainMusicViewController: UITableViewDelegate, UITableViewDataSource, M
             fatalError("Unable to dequeue CustomSongCell")
         }
         let song = viewModel.songs[indexPath.row]
+        cell.configure(with: song, isPlaying: viewModel.isCurrentlyPlaying(index: indexPath.row))
         
         return cell
     }
@@ -260,5 +261,52 @@ extension MainMusicViewController: UITableViewDelegate, UITableViewDataSource, M
         }
     }
     
+    func viewModelDidUpdatePlayingState(_ viewModel: MusicViewModel) {
+        DispatchQueue.main.async {
+            self.playButton.setImage(viewModel.isPlaying ? UIImage(systemName: "pause.fill") : UIImage(systemName: "play.fill"), for: .normal)
+        }
+    }
     
+    func viewModelDidUpdateLoadingState(_ viewModel: MusicViewModel) {
+        DispatchQueue.main.async {
+            if viewModel.isLoading {
+                self.activityIndicator.startAnimating()
+            } else {
+                self.activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
+    func viewModelDidEncounterError(_ viewModel: MusicViewModel, error: Error) {
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+            self.updateNoResultsLabelVisibility()
+        }
+    }
+    
+    func viewModelDidStartPlayingMusic(_ viewModel: MusicViewModel) {
+        DispatchQueue.main.async {
+            self.showPlayerControls()
+            self.trackNameLabel.text = self.viewModel.songs[self.viewModel.currentSongIndex!].title
+            self.artistNameLabel.text = self.viewModel.songs[self.viewModel.currentSongIndex!].artist
+        }
+    }
+    
+    func viewModelDidUpdateCurrentSong(_ viewModel: MusicViewModel) {
+        DispatchQueue.main.async {
+            self.songListTableView.reloadData()
+            if let currentSongIndex = self.viewModel.currentSongIndex {
+                self.trackNameLabel.text = self.viewModel.songs[currentSongIndex].title
+                self.artistNameLabel.text = self.viewModel.songs[currentSongIndex].artist
+            }
+        }
+    }
+    
+    func viewModelDidUpdatePlayerProgress(_ viewModel: MusicViewModel, currentTime: Double, duration: Double) {
+        DispatchQueue.main.async {
+            self.progressSlider.value = Float(currentTime / duration)
+        }
+    }
 }
