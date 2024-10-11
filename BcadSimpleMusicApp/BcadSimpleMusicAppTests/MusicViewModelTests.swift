@@ -53,5 +53,20 @@ final class MusicViewModelTests: XCTestCase {
         XCTAssertTrue(mockDelegate.startPlayingMusicCalled)
         XCTAssertTrue(mockDelegate.updateCurrentSongCalled)
     }
+    
+    func testNextSong() {
+        let testSongs = [
+            Song(id: 1, title: "Song 1", artist: "Artist 1", previewUrl: "https://example.com/1", artworkUrl: "https://example.com/art1", collectionName: "Collection Name 1"),
+            Song(id: 2, title: "Song 2", artist: "Artist 2", previewUrl: "https://example.com/2", artworkUrl: "https://example.com/art2", collectionName: "Collection Name 2")
+        ]
+        viewModel.setSongs(testSongs)
+        viewModel.selectSong(at: 0)
+        
+        viewModel.nextSong()
+        
+        XCTAssertEqual(viewModel.currentSongIndex, 1)
+        XCTAssertTrue(mockDelegate.startPlayingMusicCalled)
+        XCTAssertTrue(mockDelegate.updateCurrentSongCalled)
+    }
 
 }
