@@ -83,5 +83,21 @@ final class MusicViewModelTests: XCTestCase {
         XCTAssertTrue(mockDelegate.startPlayingMusicCalled)
         XCTAssertTrue(mockDelegate.updateCurrentSongCalled)
     }
+    
+    func testSearchSongsFailure() {
+        let expectation = self.expectation(description: "Search songs failure")
+        
+        mockAPIService.searchSongsResult = .failure(APIError.networkError(NSError(domain: "TestError", code: 0, userInfo: nil)))
+        
+        viewModel.searchSongs(query: "test")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            XCTAssertTrue(self.mockDelegate.updateLoadingStateCalled)
+            XCTAssertTrue(self.mockDelegate.encounterErrorCalled)
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
 
 }
