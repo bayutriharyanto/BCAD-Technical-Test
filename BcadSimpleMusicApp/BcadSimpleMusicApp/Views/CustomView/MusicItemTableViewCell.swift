@@ -35,6 +35,7 @@ class MusicItemTableViewCell: UITableViewCell {
     lazy var playingIcon: UIImageView = {
         let view = UIImageView()
         view.tintColor = .gray
+        view.contentMode = .scaleAspectFit
         return view
     }()
     
